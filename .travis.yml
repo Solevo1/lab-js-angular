@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+- '14'
+
+before_install:
+- npm install -g @angular/cli
+install: npm install
+
+branches:
+  only:
+  - master
+
+
+deploy:
+  provider: heroku
+  app: lab-js-angular
+  api_key:
+    secure: "a5c87fe7-c65d-44a5-a0f5-ad4892918084"
