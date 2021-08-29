@@ -26,7 +26,9 @@ app.use(session({
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/games', gamesRouter);
-
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname , '../dist/angular-project/index.html'));
+});
 app.use((req, res, next) => {
     res.status(404).json({message: 'Not found'})
 });
@@ -38,9 +40,6 @@ app.use((err, req, res, next) => {
     res.status(500).json({message: err.message});
 });
 
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname , '../dist/angular-project/index.html'));
-});
 
 const start = async () => {
     try {
