@@ -1,30 +1,21 @@
 const express = require('express');
-const path = require('path');
-const morgan = require('morgan')
-const mongoose = require('mongoose');
-const session = require('express-session');
-const app = express();
+ const favicon = require('express-favicon');
+ const path = require('path');
  const port = process.env.PORT || 8080;
-
-
-app.use(express.static(path.join(__dirname , '../dist/angular-project')));
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname , '../dist/angular-project/index.html'));
-});
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname , '../dist/angular-project/index.html'));
-});
-
-
-const start = async () => {
-    try {
-        await mongoose.connect('mongodb+srv://testuser:1111@cluster0.cxpqy.mongodb.net/data?retryWrites=true&w=majority', {
-            useNewUrlParser: true, useUnifiedTopology: true
-        });
-        app.listen(port);
-    } catch (err) {
-        console.error(`Error on server startup: ${err.message}`);
-    }
-}
-
-start();
+ 
+ // здесь у нас происходит импорт пакетов и определяется порт нашего сервера
+ const app = express();
+ 
+ //здесь наше приложение отдаёт статику
+ app.use(express.static(path.join(__dirname, '../../dist/angular-project')));
+ 
+ //простой тест сервера
+ app.get('/ping', function (req, res) {
+  return res.send('pong');
+ });
+ 
+ //обслуживание html
+ app.get('/', function (req, res) {
+ res.sendFile(path.join(__dirname, '../../dist/angular-project', 'index.html'));
+ });
+ app.listen(port);
