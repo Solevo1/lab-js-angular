@@ -1,0 +1,39 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+  <ng-container *ngIf="friendRequests.length">
+    <h1>Friend Requests</h1>
+    <ul>
+      <li class="friend" *ngFor="let user of friendRequests; let i=index">
+        <span>{{user.username}}</span>
+        <div>
+          <button class="accept-btn" (click)="acceptFriend(i)">Accept</button>
+          <button (click)="addFriend(i)">Reject</button>
+        </div>
+      </li>
+    </ul>
+  </ng-container>
+  <ng-container *ngIf="friends.length">
+    <h1>My Friends</h1>
+    <ul>
+      <li class="friend" *ngFor="let user of friends; let i=index">
+        <span>{{user.username}}</span>
+        <button (click)="addFriend(i)">Remove friend</button>
+      </li>
+    </ul>
+  </ng-container>
+  <ng-container *ngIf="searchResult.length">
+    <h1>Users</h1>
+    <form *ngIf="searchForm" [formGroup]="searchForm" (submit)="submit()">
+      <div class="search-wrapper">
+        <input class="input" id="username" type="text" placeholder="Search users..." formControlName="username">
+        <button type="submit" [disabled]="!searchForm.valid">Search</button>
+      </div>
+    </form>
+    <ul>
+      <li class="friend" *ngFor="let user of searchResult; let i=index">
+        <span>{{user.username}}</span>
+        <button (click)="addFriend(i)">Add friend</button>
+      </li>
+    </ul>
+  </ng-container>
+</div>
