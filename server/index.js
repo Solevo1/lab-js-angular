@@ -38,6 +38,10 @@ app.use((err, req, res, next) => {
     res.status(500).json({message: err.message});
 });
 
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname , '../dist/angular-project/index.html'));
+});
+
 const start = async () => {
     try {
         await mongoose.connect('mongodb+srv://testuser:1111@cluster0.cxpqy.mongodb.net/data?retryWrites=true&w=majority', {
