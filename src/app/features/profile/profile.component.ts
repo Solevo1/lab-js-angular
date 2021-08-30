@@ -15,28 +15,30 @@ export class ProfileComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly httpService: HttpService
-  ) { }
+  ) { 
+    this.httpService.get('/api/users/me').subscribe(val => {
+      console.log(Object(val))
+      this.user = Object(val)
+      if (this.user.message) {
+        this.router.navigate(['']);
+      } else {
+        this.profileForm.setValue({username:this.user.username, email: this.user.email,age: this.user.age})
+      }
+    })
+  }
 
   ngOnInit() {
     this.initForm();
   }
 
   private initForm() {
-    this.httpService.get('/api/users/me').subscribe(val => {
-      console.log(Object(val))
-      const {email, username, age, message} = Object(val);
-      if (message) { this.router.navigate(['']) }
-      this.profileForm.setValue({username:username || null, email: email || null,age: age || null})
-    })
     this.profileForm = new FormGroup({
       username: new FormControl(null,[Validators.required]),
       email: new FormControl(null,[Validators.required]),
       age: new FormControl(null,[Validators.required]),
     })
   }
-  public setUser(value:any) {
-    this.user = value;
-  }
+
   public submit() {
     this.httpService.patch('/api/users/me',this.profileForm.value).subscribe((value) => {
       alert('Updated')

@@ -8,7 +8,9 @@ const {
     getUsers,
     sendFriendRequest,
     acceptFriendRequest,
-    searchUsers
+    searchUsers,
+    removeFriend,
+    rejectFriendRequest
 } = require('../services/usersService');
 
 const {
@@ -38,7 +40,7 @@ router.patch('/me', asyncWrapper(async (req, res) => {
     await updateUserById(_id,req.body)
     const newUser = await getUserById(_id);
     req.session.user = newUser;
-    res.json({message: "Password updated successfully"});
+    res.json({message: "Updated successfully"});
 }));
 
 router.post('/search/filter', asyncWrapper(async (req, res) => {
@@ -49,7 +51,6 @@ router.post('/search/filter', asyncWrapper(async (req, res) => {
 
 router.get('/search', asyncWrapper(async (req, res) => {
     const result = await searchUsers(req.session.user);
-    console.log(result);
     res.json(result)
 }));
 
@@ -59,8 +60,20 @@ router.post('/friends/request', asyncWrapper(async (req, res) => {
 }));
 
 router.post('/friends/accept', asyncWrapper(async (req, res) => {
-    console.log(req.body)
-    await acceptFriendRequest(req.body,req.session.user)
+    await acceptFriendRequest(req.body,req.session.user);
+    req.session.user = await getUserById(req.session.user._id);
+    res.json('Request sent!')
+}));
+
+router.post('/friends/reject', asyncWrapper(async (req, res) => {
+    await rejectFriendRequest(req.body,req.session.user);
+    req.session.user = await getUserById(req.session.user._id);
+    res.json('Request sent!')
+}));
+
+router.post('/friends/remove', asyncWrapper(async (req, res) => {
+    await removeFriend(req.body._id,req.session.user._id);
+    req.session.user = await getUserById(req.session.user._id);
     res.json('Request sent!')
 }));
 

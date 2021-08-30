@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http.service';
 
 @Component({
@@ -9,16 +10,21 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class FriendsComponent implements OnInit {
   public searchForm: FormGroup;
-  public searchResult:any;
-  public friendRequests:any;
-  public friends:any;
+  public searchResult:any = [];
+  public friendRequests:any = [];
+  public friends:any = [];
   constructor(
-    private readonly httpService: HttpService
+    private readonly httpService: HttpService,
+    private readonly router: Router
   ) {
     this.httpService.get('/api/users/me').subscribe((value) => {
       const user = Object(value);
-      this.friendRequests = user.requests;
-      this.friends = user.friends;
+      if(user.message==="Not authorized") {
+        this.router.navigate(['']);
+      } else {
+        this.friendRequests = user.requests;
+        this.friends = user.friends;
+      }
     });
     this.httpService.get('/api/users/search').subscribe(value => {
       this.searchResult = Object(value);
@@ -35,7 +41,7 @@ export class FriendsComponent implements OnInit {
     })
   }
 
-  public submit(){
+  public searchUsers(){
     if(this.searchForm.value) {
       this.httpService.post('/api/users/search/filter',this.searchForm.value).subscribe((value) => {
         this.searchResult = Object(value);
@@ -47,16 +53,31 @@ export class FriendsComponent implements OnInit {
     }
   }
 
-  public addFriend(index:number) {
+  public addFriend(event: Event, index:number) {
     this.httpService.post('/api/users/friends/request',this.searchResult[index]).subscribe((value) => {
       alert('Request sent!')
     });
+    Object(event.target).parentNode.remove();
   }
   
-  public acceptFriend(index:number) {
+  public acceptFriend(event: Event, index:number) {
     this.httpService.post('/api/users/friends/accept',this.friendRequests[index]).subscribe((value) => {
       alert('Request accepted!')
     });
-    document.getElementById('list')?.childNodes[index].remove();
+    Object(event.target).parentNode.parentNode.remove();
+  }
+
+  public rejectFriend(event: Event, index:number) {
+    this.httpService.post('/api/users/friends/reject',this.friendRequests[index]).subscribe((value) => {
+      alert('Request accepted!')
+    });
+    Object(event.target).parentNode.parentNode.remove();
+  }
+
+  public removeFriend(event: Event, index:number) {
+    this.httpService.post('/api/users/friends/remove',this.friends[index]).subscribe((value) => {
+      alert('Friend removed!')
+    });
+    Object(event.target).parentNode.remove();
   }
 }

@@ -10,7 +10,7 @@ const registration = async ({email, password}) => {
 
 const signIn = async ({email, password}) => {
     const user = await User.findOne({email});
-    if(user.password !== password) return null;
+    if(!user || user.password !== password) return null;
     return user;
 }
 

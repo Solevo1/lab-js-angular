@@ -29,7 +29,7 @@ const sendFriendRequest = async (userId, friend) => {
 }
 
 const acceptFriendRequest = async (friend, user) => {
-    const newRequests = user.requests.filter(user => user._id!==friend._id);
+   const newRequests = user.requests.filter(user => user._id!==friend._id);
    await User.findByIdAndUpdate(user._id,{$set:{
        requests:newRequests,
        friends: [...user.friends, friend]
@@ -37,7 +37,13 @@ const acceptFriendRequest = async (friend, user) => {
    await User.findByIdAndUpdate(friend._id,{$set:{
        friends: [...friend.friends, user]
    }})
-   req.session.user = await User.findById(user._id);
+}
+
+const rejectFriendRequest = async (friend, user) => {
+   const newRequests = user.requests.filter(user => user._id!==friend._id);
+   await User.findByIdAndUpdate(user._id,{$set:{
+       requests:newRequests
+   }})
 }
 
 const searchUsers = async (user,searchString) => {
@@ -59,6 +65,17 @@ const searchUsers = async (user,searchString) => {
     })
 }
 
+const removeFriend = async (friendId, userId) => {
+   const user = await User.findById(userId);
+   await User.findByIdAndUpdate(userId,{$set:{
+       friends:user.friends.filter(friend => friend._id!==friendId)
+   }})
+   const friend = await User.findById(friendId);
+   await User.findByIdAndUpdate(friendId,{$set:{
+       friends:friend.friends.filter(friend => friend._id!==userId)
+   }})
+}
+
 module.exports = {
     deleteUserById,
     updateUserById,
@@ -66,5 +83,7 @@ module.exports = {
     getUsers,
     sendFriendRequest,
     acceptFriendRequest,
-    searchUsers
+    searchUsers,
+    removeFriend,
+    rejectFriendRequest
 };

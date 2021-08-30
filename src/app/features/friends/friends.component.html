@@ -6,8 +6,8 @@
       <li class="friend" *ngFor="let user of friendRequests; let i=index">
         <span>{{user.username}}</span>
         <div>
-          <button class="accept-btn" (click)="acceptFriend(i)">Accept</button>
-          <button (click)="addFriend(i)">Reject</button>
+          <button class="accept-btn" (click)="acceptFriend($event,i)">Accept</button>
+          <button (click)="rejectFriend($event,i)">Reject</button>
         </div>
       </li>
     </ul>
@@ -17,13 +17,13 @@
     <ul>
       <li class="friend" *ngFor="let user of friends; let i=index">
         <span>{{user.username}}</span>
-        <button (click)="addFriend(i)">Remove friend</button>
+        <button (click)="removeFriend($event,i)">Remove friend</button>
       </li>
     </ul>
   </ng-container>
-  <ng-container *ngIf="searchResult.length">
+  <ng-container>
     <h1>Users</h1>
-    <form *ngIf="searchForm" [formGroup]="searchForm" (submit)="submit()">
+    <form *ngIf="searchForm" [formGroup]="searchForm" (submit)="searchUsers()">
       <div class="search-wrapper">
         <input class="input" id="username" type="text" placeholder="Search users..." formControlName="username">
         <button type="submit" [disabled]="!searchForm.valid">Search</button>
@@ -32,7 +32,7 @@
     <ul>
       <li class="friend" *ngFor="let user of searchResult; let i=index">
         <span>{{user.username}}</span>
-        <button (click)="addFriend(i)">Add friend</button>
+        <button (click)="addFriend($event, i)">Add friend</button>
       </li>
     </ul>
   </ng-container>

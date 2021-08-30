@@ -22,7 +22,11 @@ export class LoginComponent implements OnInit {
   }
   public submit() {
     this.httpService.post('/api/auth/login',this.loginForm.value).subscribe((value) => {
-      this.router.navigate(['/profile'])
+      if(Object(value).message==='Incorrect email or password') {
+        alert(Object(value).message)
+      } else {
+        this.router.navigate(['/profile'])
+      }
     });
   }
   private initForm() {

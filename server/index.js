@@ -11,9 +11,9 @@ const {authRouter} = require('./controllers/authController');
 const {NodeCourseError} = require('./utils/errors'); 
 const { gamesRouter } = require('./controllers/gamesController');
 
-app.use(express.static(path.join(__dirname , '../../dist/angular-project')));
+app.use(express.static(path.join(__dirname , '../dist/angular-project')));
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname , '../../dist/angular-project/index.html'));
+    res.sendFile(path.join(__dirname , '../dist/angular-project/index.html'));
 });
 app.use(express.json());
 app.use(morgan('tiny'));
@@ -28,7 +28,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/games', gamesRouter);
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname , '../../dist/angular-project/index.html'));
+    res.sendFile(path.join(__dirname , '../dist/angular-project/index.html'));
 });
 app.use((req, res, next) => {
     res.status(404).json({message: 'Not found'})

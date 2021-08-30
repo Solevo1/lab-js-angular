@@ -31,10 +31,13 @@ router.post('/login', asyncWrapper(async (req, res) => {
         password
     } = req.body;
     const user = await signIn({email, password});
-    req.session.user = user;
-    if(!user) {res.status(401).json({message: 'Error'})}
+    if(!user) {
+        res.json({message: 'Incorrect email or password'})
+    }
     else {
-    res.json({ message: 'Logged in successfully!'})}
+        req.session.user = user;
+        res.json({ message: 'Logged in successfully!'})
+    }
 }));
 
 module.exports = {
