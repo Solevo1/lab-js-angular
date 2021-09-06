@@ -49,7 +49,7 @@ const start = async () => {
         });
         app.listen(port);
     } catch (err) {
-        console.error(`Error: ${err.message}`);
+        console.error(`Error on server startup: ${err.message}`);
     }
 }
 
