@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+  <form *ngIf="searchForm" [formGroup]="searchForm" (submit)="searchGames()">
+    <label for="game-name">Search Games</label>
+    <input id="game-name" type="text" placeholder="Game Name" formControlName="name">
+    <button type="submit" [disabled]="!searchForm.valid">Search</button>
+  </form>
+  <h1>Featured games</h1>
+  <ul class="list" id="games-list" *ngIf="games">
+    <li class="item" *ngFor="let game of games; let i=index">
+      <div class="name-wrapper">
+        <div>{{game.name}}</div>
+        <div class="price">{{game.price}}</div>
+      </div>
+      <div>{{game.description}}</div>
+      <button class="add-btn" (click)="addGame($event,i)">Add to Library</button>
+    </li>
+  </ul>
+</div>
