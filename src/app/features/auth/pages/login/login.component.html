@@ -1,8 +1,0 @@
-<form class="form" *ngIf="loginForm" [formGroup]="loginForm" (submit)="submit()">
-  <h1 class="header">Sign In</h1>
-  <label for="email">Email</label>
-  <input id="email" type="text" placeholder="Email" formControlName="email">
-  <label for="password">Password</label>
-  <input id="password" type="password" placeholder="Password" formControlName="password">
-  <button class="submit" type="submit" [disabled]="!loginForm.valid">Sign In</button>
-</form>
