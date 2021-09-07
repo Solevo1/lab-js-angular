@@ -42,15 +42,9 @@ export class FriendsComponent implements OnInit {
   }
 
   public searchUsers(){
-    if(this.searchForm.value) {
       this.httpService.post('/api/users/search/filter',this.searchForm.value).subscribe((value) => {
         this.searchResult = Object(value);
       });
-    } else {
-      this.httpService.get('/api/users/search').subscribe((value) => {
-        this.searchResult = Object(value);
-      });
-    }
   }
 
   public addFriend(event: Event, index:number) {

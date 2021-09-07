@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   }
   public submit() {
     this.httpService.post('/api/auth/login',this.loginForm.value).subscribe((value) => {
-      if(Object(value).message==='Incorrect email or password') {
+      if(Object(value).status===400) {
         alert(Object(value).message)
       } else {
         this.router.navigate(['/profile'])
