@@ -32,7 +32,7 @@ router.post('/login', asyncWrapper(async (req, res) => {
     } = req.body;
     const user = await signIn({email, password});
     if(!user) {
-        res.json({message: 'Incorrect email or password'})
+        res.status(400).json({message: 'Incorrect email or password'})
     }
     else {
         req.session.user = user;
