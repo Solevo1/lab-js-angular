@@ -3,6 +3,7 @@ const path = require('path');
 const morgan = require('morgan')
 const mongoose = require('mongoose');
 const session = require('express-session');
+require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 8080
 
@@ -44,7 +45,7 @@ app.use((err, req, res, next) => {
 
 const start = async () => {
     try {
-        await mongoose.connect('mongodb+srv://testuser:1111@cluster0.cxpqy.mongodb.net/data?retryWrites=true&w=majority', {
+        await mongoose.connect(process.env.DB_CONNECTION, {
             useNewUrlParser: true, useUnifiedTopology: true
         });
         app.listen(port);

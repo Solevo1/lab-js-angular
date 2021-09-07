@@ -3,7 +3,7 @@ const { User } = require('../models/userModel');
 
 const getGames = async (user, searchString) => {
   const games = await Game.find();
-  return games.filter(({name}) => {
+  const result = games.filter(({name}) => {
     if(user.games.filter(game => game.name===name).length) {
       return false
     } else { 
@@ -13,7 +13,8 @@ const getGames = async (user, searchString) => {
         return true;
       }
     }
-  })
+  });
+  return result;
 }
 
 const addGame = async (gamePayload) => {
