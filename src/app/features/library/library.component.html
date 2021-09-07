@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+  <h1>My games</h1>
+  <ul class="list" id="games-list" *ngIf="games">
+    <li class="item" *ngFor="let game of games; let i=index">
+      <div class="name-wrapper">
+         <div>{{game.name}}</div>
+        <div>{{game.price}}</div>
+      </div>
+      <div>{{game.description}}</div>
+      <div class="btn-wrapper">
+        <button (click)="downloadGame($event,i)">Download</button>
+        <button (click)="shareGame($event,i)">Share</button>
+      </div>
+    </li>
+  </ul>
+</div>
